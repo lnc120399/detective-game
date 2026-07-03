@@ -566,6 +566,9 @@
           <div class="waiting" id="waitingMessage">
             Esperando al otro detective...
           </div>
+          <button class="btn-primary" onclick="playSoloMode()" style="margin-top: 20px;">
+            🎮 Jugar Solo (Modo Prueba)
+          </button>
         </div>
       </div>
     </div>
@@ -695,6 +698,59 @@
           <small>${p.role}</small>
         </div>`
       ).join('');
+    }
+
+    function playSoloMode() {
+      const soloData = {
+        mystery: {
+          title: "El Robo de la Joya de la Corona",
+          setting: "La gala de caridad del Museo Arqueológico anoche"
+        },
+        suspects: [
+          {
+            id: 1,
+            name: "Gabriela Moretti",
+            role: "Directora del museo",
+            alibi: "Estaba cortando el champagne en la cocina"
+          },
+          {
+            id: 2,
+            name: "Marco Delgado",
+            role: "Vigilante nocturno",
+            alibi: "Patrullaba el segundo piso"
+          },
+          {
+            id: 3,
+            name: "Sofia Vega",
+            role: "Coleccionista de arte invitada",
+            alibi: "Estaba en el baño durante 20 minutos"
+          }
+        ]
+      };
+
+      gameState.suspects = soloData.suspects;
+      document.getElementById('waitingArea').style.display = 'none';
+      document.getElementById('lobby').style.display = 'none';
+      document.getElementById('game').style.display = 'grid';
+
+      const headerEl = document.getElementById('mysteryHeader');
+      headerEl.innerHTML = `
+        <h2>${soloData.mystery.title}</h2>
+        <p>📍 ${soloData.mystery.setting}</p>
+      `;
+
+      renderClues();
+      renderSuspects();
+
+      const playersList = document.getElementById('playersList');
+      playersList.innerHTML = `
+        <div class="player-badge">
+          <strong>${playerName}</strong><br>
+          <small>Detective Solitario</small>
+        </div>
+      `;
+
+      updateGameStats();
     }
 
     function startGame(data) {
